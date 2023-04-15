@@ -1,0 +1,26 @@
+.container {
+    display: grid;
+    /*grid-template-columns: 1fr 2fr 1fr;*/
+    grid-template:
+        'topo topo topo'
+        'esquerda . direita'
+        'rodape rodape rodape';
+}
+.container > div {
+    border: dotted 1px;
+}
+.item1 {
+    grid-area: topo;
+    display: flex;
+    justify-content: center;
+}
+.item2 {
+    grid-area: esquerda;
+    height: 200px;
+}
+.item3{
+    grid-area: direita;
+}
+.item4 {
+    grid-area: rodape;
+}

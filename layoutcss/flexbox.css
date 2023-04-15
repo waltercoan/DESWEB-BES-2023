@@ -1,0 +1,10 @@
+.container {
+    background-color: cadetblue;
+    height: 200px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.container > div{
+    border: dotted 2px;
+}
