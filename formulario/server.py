@@ -7,8 +7,16 @@ def index():
     #dados = request.args
     login = request.form.get('login')
     senha = request.form.get('senha')
+    datanascimento = request.form.get('datanascimento')
+    coquinha = request.form.get('coquinha')
+    chocolate = request.form.get('chocolate')
+    sexo = request.form.get('sexo')
     return f"<p>Login: {login} </p> \
-    <p>Senha: {senha}</p>"
+    <p>Senha: {senha}</p> \
+    <p>Data: {datanascimento}</p> \
+    <p>Coquinha: {coquinha}</p> \
+    <p>Chocolate: {chocolate}</p>  \
+    <p>Sexo: {sexo}</p>"
 
 @app.route("/formulario")
 def formulario():
@@ -25,11 +33,26 @@ def formulario():
         <form action="http://localhost:5000/" method="POST">
             <fieldset>
                 <label for="txtlogin">Login</label>
-                <input type="text" id="txtlogin" name="login" placeholder="Digite seu nome">
+                <input required type="text" id="txtlogin" name="login" placeholder="Digite seu nome">
             </fieldset>
             <fieldset>
                 <label for="txtsenha">Senha</label>
-                <input type="password" id="txtsenha" name="senha">
+                <input required type="password" id="txtsenha" name="senha">
+            </fieldset>
+            <fieldset>
+                <input type="email" name="email">
+            </fieldset>
+            <fieldset>
+                <label>Data de Nascimento</label>
+                <input type="date" name="datanascimento">
+            </fieldset>
+            <fieldset>
+                <input type="checkbox" name="coquinha">Coca-Cola
+                <input type="checkbox" name="chocolate">Chocolate
+            </fieldset>
+            <fieldset>
+                <input type="radio" name="sexo" value="masc">Masculino
+                <input type="radio" name="sexo" value="fem">Feminino
             </fieldset>
             <input type="submit">
             <!--<button type="submit">Enviar</button>-->
