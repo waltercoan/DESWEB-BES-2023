@@ -11,12 +11,15 @@ def index():
     coquinha = request.form.get('coquinha')
     chocolate = request.form.get('chocolate')
     sexo = request.form.get('sexo')
+    cores = request.form.get('cores')
+    endereco = request.form.get('endereco')
     return f"<p>Login: {login} </p> \
     <p>Senha: {senha}</p> \
     <p>Data: {datanascimento}</p> \
     <p>Coquinha: {coquinha}</p> \
     <p>Chocolate: {chocolate}</p>  \
-    <p>Sexo: {sexo}</p>"
+    <p>Sexo: {sexo}</p> \
+    <p>Cores: {cores}</p> <p>Endereco: {endereco}</p>"
 
 @app.route("/formulario")
 def formulario():
@@ -54,6 +57,24 @@ def formulario():
                 <input type="radio" name="sexo" value="masc">Masculino
                 <input type="radio" name="sexo" value="fem">Feminino
             </fieldset>
+
+            <fieldset>
+                <input type="text" value="nao altera" readonly="readonly" disabled>
+            </fieldset>
+
+            <fieldset>
+                <select name="cores">
+                   <option value="1">Verde</option>
+                   <option value="2">Vermelho</option>
+                   <option value="3">Azul</option>
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <textarea name="endereco"
+                 rows="10" cols="30"></textarea> 
+            </fieldset>
+
             <input type="submit">
             <!--<button type="submit">Enviar</button>-->
         </form>
