@@ -1,0 +1,16 @@
+main {
+    display: flex;
+    flex-direction: column;
+}
+.teclado{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+body {
+    max-width: 400px;
+    margin: auto;
+}
+input {
+    font-size: larger;
+    font-style: oblique;
+}

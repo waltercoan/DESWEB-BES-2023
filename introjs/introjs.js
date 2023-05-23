@@ -10,3 +10,6 @@ var nome = prompt("Digite o seu nome")
 //window.document.writeln("Voce digitou: " + nome)
 document.writeln("Voce digitou: " + nome)
 */
+function meuCodigo(){
+    alert("chamou...")
+}
