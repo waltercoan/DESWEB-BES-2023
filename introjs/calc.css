@@ -4,6 +4,7 @@ main {
 }
 .teclado{
     display: grid;
+    width: 80%;
     grid-template-columns: 1fr 1fr 1fr;
 }
 body {
@@ -13,4 +14,12 @@ body {
 input {
     font-size: larger;
     font-style: oblique;
+}
+.botoes {
+    display: flex;
+    flex-direction: row;
+}
+.operacoes{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
