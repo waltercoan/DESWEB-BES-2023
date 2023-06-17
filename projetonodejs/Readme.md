@@ -17,3 +17,20 @@ OBS: Teclar enter em todas as perguntas
 npm install express
 ```
 6. Criou um arquivo chamado index.js
+```
+//importar a biblioteca do express do NodeJS
+const express = require('express')
+//inicializa a biblioteca do express
+const app = express()
+
+//registrando o endereco "/" e retornando um texto fixo
+app.get('/', function(req,res){
+    res.send('Eu não acredito')
+})
+
+//Colocando o express para "ouvir" as requisições na porta 80
+app.listen(80, ()=>{
+    console.log('Servidor rodando...')
+    console.log('http://localhost/')
+})
+```
