@@ -1,0 +1,24 @@
+<h1>Clientes</h1>
+<hr>
+<table class="table">
+    <thead> <!--Título da tabela -->
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Endereço</th>
+            <th>Sexo</th>
+            <th>Telefone</th>
+        </tr>
+    </thead>
+    <tbody> <!--CORPO da tabela -->
+        {{#each listaclientes}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.nome}}</td>
+            <td>{{this.endereco}}</td>
+            <td>{{this.sexo}}</td>
+            <td>{{this.telefone}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

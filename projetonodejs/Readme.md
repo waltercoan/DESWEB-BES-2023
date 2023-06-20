@@ -86,3 +86,149 @@ app.listen(80, ()=>{
     console.log('http://localhost/')
 })
 ```
+
+## Configuração do Bootstrap
+
+- Alterar o arquivo index.js para importar a biblioteca path
+```
+const path = require('path')
+```
+
+- Alterar o arquivo index.js para servir os arquivos estáticos CSS e JavaScript do Bootstrap e do JQuery
+```
+app.use('/css', express.static(path.join(__dirname,'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(__dirname,'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(__dirname,'node_modules/jquery/dist')))
+app.use('/public', express.static(path.join(__dirname,'public')))
+```
+
+- Altera o arquivo views->layouts->main.handlebars para carregar os arquivo CSS da biblioteca do Bootstrap e do JQuery
+
+```
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css"> <!-- Importar css-->
+        <link rel="stylesheet" href="/public/site.css"> <!-- Importar css-->
+    </head>
+```
+- Altera o arquivo views->layouts->main.handlebars para carregar os arquivo Javascript da biblioteca do Bootstrap e do JQuery
+
+```
+<script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.js"></script>
+```
+- Altera o arquivo views->layouts->main.handlebars para inserir o código HTML das páginas dentro de uma tag MAIN com a classe container
+```
+<main class="container">
+    {{{body}}}        
+</main>
+```
+- Escolher um navbar (menu) do [Bootstrap](https://getbootstrap.com/docs/5.3/components/navbar/#nav) e inserir o código no arquivo views->layouts->main.handlebars
+```
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link disabled">Disabled</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+</nav>
+```
+
+## Construção da tela de CRUD (Create/Read/Update/Delete) de Cliente (READ)
+- Alterar o arquivo index.js para incluir um novo endereço (ROTA) para a tela de clientes
+```
+app.get('/clientes', function(req,res){
+    res.render('cliente/cliente')
+})
+```
+- Criar uma pasta com o nome cliente dentro da pasta views
+- Criar um arquivo chamado cliente.handlebars dentro da pasta views->cliente
+- Código inicial do arquivo cliente.handlebars
+```
+<h1>Clientes</h1>
+<hr>
+<table class="table">
+    <thead> <!--Título da tabela -->
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Endereço</th>
+            <th>Sexo</th>
+            <th>Telefone</th>
+        </tr>
+    </thead>
+    <tbody> <!--CORPO da tabela -->
+        <tr>
+            <td>1</td>
+            <td>Zezinho</td>
+            <td>Rua lalalal 100</td>
+            <td>Masculino</td>
+            <td>5555-1234</td>
+        </tr>
+    </tbody>
+</table>
+```
+- Executar o projeto e verificar se a tabela é apresenta no endereço [http://localhost/clientes](http://localhost/clientes)
+
+### Tornando a tela de listagem de Clientes dinâmica
+- Alterar o arquivo index.js para incluir uma variável que servirá de fonte de dados para o cadastro de clientes
+```
+const fakedata = [
+    {
+        id: 1,
+        nome: 'zezinho da silva',
+        endereco: 'Rua lalala 100',
+        sexo: 'Masculino',
+        telefone: '5555-1234'
+    },
+    {
+        id: 2,
+        nome: 'Mariazinha da silva',
+        endereco: 'Rua lelelel 200',
+        sexo: 'Feminino',
+        telefone: '5555-4321'
+    }
+]
+```
+- Alterar o arquivo index.js para que a rota /clientes envie os dados da lista fakedata para a tela com o apelido listaclientes
+```
+app.get('/clientes', function(req,res){
+    res.render('cliente/cliente',
+    {listaclientes: fakedata})
+})
+```
+- Altera o arquivo views->cliente->cliente.handlebars para que o corpo da tabela seja atulizado de forma dinâmica utilizando o FOR EACH do Handlbars
+```
+<tbody> <!--CORPO da tabela -->
+    {{#each listaclientes}}
+    <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.nome}}</td>
+        <td>{{this.endereco}}</td>
+        <td>{{this.sexo}}</td>
+        <td>{{this.telefone}}</td>
+    </tr>
+    {{/each}}
+</tbody>
+```
+- Executar o projeto e verificar se a tabela é apresenta no endereço [http://localhost/clientes](http://localhost/clientes)
