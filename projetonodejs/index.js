@@ -3,6 +3,9 @@ const app = express()
 const { engine } = require('express-handlebars')
 const path = require('path')
 
+const bodyparser = require('body-parser')
+
+app.use(bodyparser.urlencoded({extended:false}))
 app.set('view engine', 'handlebars')
 app.engine('handlebars', engine(''))
 
@@ -39,6 +42,30 @@ app.get('/clientes', function(req,res){
     {listaclientes: fakedata})
 })
 
+app.get('/clientes/novo', function(req,res){
+    res.render('cliente/formcliente')
+})
+
+app.post('/clientes/save', function(req,res){
+    //console.log(req.body)
+    /*let maiorid=0
+    for(let i=0;i<fakedata.length;i++){
+        if(fakedata[i].id > maiorid){
+            maiorid = fakedata[i].id
+        }
+    }
+    maiorid = maiorid + 1*/
+
+    let maiorid = Math.max(...fakedata.map(o => o.id))
+
+    let novocliente ={
+        id: maiorid + 1,
+        nome: req.body.nome
+    }
+    fakedata.push(novocliente)
+    res.redirect('/clientes')
+
+})
 
 app.listen(80, ()=>{
     console.log('Servidor rodando...')

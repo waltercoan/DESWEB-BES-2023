@@ -232,3 +232,72 @@ app.get('/clientes', function(req,res){
 </tbody>
 ```
 - Executar o projeto e verificar se a tabela é apresenta no endereço [http://localhost/clientes](http://localhost/clientes)
+
+
+## Inclusão do cadastro de clientes no menu da aplicação
+- Alterar o arquivo views->layouts->main.handlebars para incluir o link para o cadastro de clientes
+```
+<li class="nav-item">
+    <a class="nav-link" href="/clientes">Clientes</a>
+</li>
+```
+
+## Construção da tela de cadastrar clientes
+- Alterar o arquivo views->layouts->cliente.handlebars para incluir o botão para a tela de inclusão de registros
+```
+<a href="/clientes/novo" class="btn btn-primary">Novo</a>
+```
+- Alterar o arquivo index.js para criar a nova rota /clientes/novo
+```
+app.get('/clientes/novo', function(req,res){
+    res.render('cliente/formcliente')
+})
+```
+- Criar um novo arquivo em views->cliente com o nome formcliente.handlebars
+- Incluir o código abaixo para criar o formulário
+```
+<h2>Cliente</h2>
+<hr>
+
+<form action="/clientes/save" method="post">
+    <div class="form-group">
+        <label for="txtnome">Nome</label>
+        <input type="text" 
+            class="form-control"
+            id="txtnome" name="nome" required>
+    </div>
+
+    <button type="submit" 
+        class="btn btn-primary">Enviar</button>
+
+</form>
+```
+- Alterar o arquivo index.js para importar e aplicar a biblioteca body-parser
+```
+const bodyparser = require('body-parser')
+
+app.use(bodyparser.urlencoded({extended:false}))
+```
+- Alterar o arquivo index.js para incluir a lógica da rota /clientes/save para receber os dados do formulário e incluir na variável fakedata
+```
+app.post('/clientes/save', function(req,res){
+    //console.log(req.body)
+    /*let maiorid=0
+    for(let i=0;i<fakedata.length;i++){
+        if(fakedata[i].id > maiorid){
+            maiorid = fakedata[i].id
+        }
+    }
+    maiorid = maiorid + 1*/
+
+    let maiorid = Math.max(...fakedata.map(o => o.id))
+
+    let novocliente ={
+        id: maiorid + 1,
+        nome: req.body.nome
+    }
+    fakedata.push(novocliente)
+    res.redirect('/clientes')
+
+})
+```
