@@ -47,27 +47,33 @@ app.get('/clientes/novo', function(req,res){
 })
 
 app.post('/clientes/save', function(req,res){
-    //console.log(req.body)
-    /*let maiorid=0
-    for(let i=0;i<fakedata.length;i++){
-        if(fakedata[i].id > maiorid){
-            maiorid = fakedata[i].id
+    //guarda o ID do cliente antigo (no caso do alterar)
+    let clienteantigo =
+        fakedata.find(o => o.id == req.body.id)
+    //se existir atualiza com os dados da tela
+    if(clienteantigo != undefined){
+        //atualiza todos os campos do cliente com os dados do formulário
+        clienteantigo.nome = req.body.nome
+        clienteantigo.endereco = req.body.endereco
+        clienteantigo.sexo = req.body.sexo
+        clienteantigo.telefone = req.body.telefone
+
+    }else{// caso contrário é uma inclusão
+        //busca qual foi o maior ID entre todos os clientes
+        let maiorid = Math.max(...fakedata.map(o => o.id))
+        //cria um novo cliente, e carrega os dados do formulário de incluir
+        let novocliente ={
+            id: maiorid + 1, //calcula o novo id somando 1 
+            nome: req.body.nome,
+            endereco: req.body.endereco,
+            sexo: req.body.sexo,
+            telefone: req.body.telefone
         }
+        //empurra o novo cliente para a lista fakedata
+        fakedata.push(novocliente)
     }
-    maiorid = maiorid + 1*/
-
-    let maiorid = Math.max(...fakedata.map(o => o.id))
-
-    let novocliente ={
-        id: maiorid + 1,
-        nome: req.body.nome,
-        endereco: req.body.endereco,
-        sexo: req.body.sexo,
-        telefone: req.body.telefone
-    }
-    fakedata.push(novocliente)
+    //redireciona para a tela de clientes
     res.redirect('/clientes')
-
 })
 
 app.get('/clientes/alterar/:id', function(req,res){

@@ -243,7 +243,7 @@ app.get('/clientes', function(req,res){
 ```
 
 ## Construção da tela de cadastrar clientes
-- Alterar o arquivo views->layouts->cliente.handlebars para incluir o botão para a tela de inclusão de registros
+- Alterar o arquivo views->cliente->cliente.handlebars para incluir o botão para a tela de inclusão de registros
 ```
 <a href="/clientes/novo" class="btn btn-primary">Novo</a>
 ```
@@ -299,5 +299,90 @@ app.post('/clientes/save', function(req,res){
     fakedata.push(novocliente)
     res.redirect('/clientes')
 
+})
+```
+
+## Construção da tela de alterar clientes
+
+- Alterar o arquivo views->cliente->cliente.handlebars para incluir o botao novo na tela
+
+```
+<a href="/clientes/novo" class="btn btn-primary">Novo</a>
+```
+ 
+- Alterar o arquivo index.js para incluir uma nova rota na aplicação chamada alterar e que deve buscar os dados do cliente na variável de fakedata e repassar para a tela de formulário
+
+```
+app.get('/clientes/alterar/:id', function(req,res){
+    let id = req.params['id']
+    //procura o cliente pelo id
+    let umcliente = fakedata.find(o => o.id == id)
+    res.render('cliente/formcliente',
+            {cliente: umcliente})
+
+})
+```
+
+- Alterar a tela de formulário para incluir um campo hidden para o ID e em cada input incluir a propriedade value para que o handlebars possa inserir os dados do cliente em cada caixa de texto
+
+```
+    <input type="hidden" name="id" 
+    value="{{cliente.id}}">
+```
+```
+ <input type="text" value="{{cliente.nome}}"
+            class="form-control"
+            id="txtnome" name="nome" required>
+```
+
+```
+<input type="text" value="{{cliente.endereco}}"
+            class="form-control"
+            id="txtendereco" name="endereco">
+```
+
+```
+<input type="text"  value="{{cliente.sexo}}"
+            class="form-control"
+            id="txtsexo" name="sexo">
+```
+
+```
+<input type="text" value="{{cliente.telefone}}"
+            class="form-control"
+            id="txttelefone" name="telefone">
+```
+
+- Alterar o código do arquivo index.js para que a rota /save faça a lógica de alterar e a lógica de incluir novos clientes
+
+```
+app.post('/clientes/save', function(req,res){
+    //guarda o ID do cliente antigo (no caso do alterar)
+    let clienteantigo =
+        fakedata.find(o => o.id == req.body.id)
+    //se existir atualiza com os dados da tela
+    if(clienteantigo != undefined){
+        //atualiza todos os campos do cliente com os dados do formulário
+        clienteantigo.nome = req.body.nome
+        clienteantigo.endereco = req.body.endereco
+        clienteantigo.sexo = req.body.sexo
+        clienteantigo.telefone = req.body.telefone
+
+    }else{// caso contrário é uma inclusão
+        //busca qual foi o maior ID entre todos os clientes
+        let maiorid = Math.max(...fakedata.map(o => o.id))
+        //cria um novo cliente, e carrega os dados do formulário de incluir
+        let novocliente ={
+            id: maiorid + 1, //calcula o novo id somando 1 
+            nome: req.body.nome,
+            endereco: req.body.endereco,
+            sexo: req.body.sexo,
+            telefone: req.body.telefone
+        }
+        //empurra o novo cliente para a lista fakedata
+        fakedata.push(novocliente)
+    }
+    //redireciona para a tela de clientes
+    res.redirect('/clientes')
 })
 ```
