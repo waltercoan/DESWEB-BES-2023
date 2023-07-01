@@ -85,6 +85,18 @@ app.get('/clientes/alterar/:id', function(req,res){
 
 })
 
+app.get('/clientes/delete/:id', function(req,res){
+    //código para excluir o cliente no backend
+    //procurar pelo cliente no fakedata
+    let umcliente = fakedata.find(o => o.id == req.params['id'])
+    let posicaocli = fakedata.indexOf(umcliente)
+    if(posicaocli > -1){ //testando se eu achei o cliente
+        fakedata.splice(posicaocli,1)
+    }
+    res.redirect('/clientes')
+})
+
+
 
 app.listen(80, ()=>{
     console.log('Servidor rodando...')

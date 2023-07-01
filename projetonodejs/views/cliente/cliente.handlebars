@@ -1,7 +1,7 @@
 <h1>Clientes</h1>
 <a href="/clientes/novo" class="btn btn-primary">Novo</a>
 <hr>
-<table class="table">
+<table class="table" id="clientes">
     <thead> <!--Título da tabela -->
         <tr>
             <th>ID</th>
@@ -23,8 +23,32 @@
             <td>
                 <a href="/clientes/alterar/{{this.id}}" 
                         class="btn btn-warning">Alterar</a>
+                
+                <button data-id="{{this.id}}"
+                    class="btn btn-danger js-delete">Excluir</button>
             </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
+<div class="modal" tabindex="-1" id="meumodal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Excluir cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Confirma a exclusão do cliente?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnsim">SIM</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/public/site.js"></script>
