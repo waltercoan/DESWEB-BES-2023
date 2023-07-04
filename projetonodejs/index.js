@@ -41,6 +41,13 @@ app.get('/clientes', function(req,res){
     res.render('cliente/cliente',
     {listaclientes: fakedata})
 })
+app.get('/clientes/excel', function(req,res){
+    res.setHeader('Content-Disposition', 'attachment; filename="excel.csv"');
+    res.setHeader('Content-Type', 'application/csv');
+    var excel = fakedata.map(o => `${o.id};${o.nome};${o.endereco};${o.sexo};${o.telefone}\n`).toString()
+    res.send(excel)
+    
+})
 
 app.get('/clientes/novo', function(req,res){
     res.render('cliente/formcliente')
