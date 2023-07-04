@@ -386,3 +386,91 @@ app.post('/clientes/save', function(req,res){
     res.redirect('/clientes')
 })
 ```
+## Construção do Excluir clientes
+- Alterar o arquivo views->cliente->cliente.handlebars para incluir o botão de excluir na tabela, depois do código do botão alterar
+```
+<button data-id="{{this.id}}"
+                    class="btn btn-danger js-delete">Excluir</button>
+```
+
+- Ainda no arquivo cliente.handlebars depois da tabela incluir o código HTML do bootstrap para desenhar a tela de confirmação de exclusão [modal](https://getbootstrap.com/docs/5.3/components/modal/)
+
+- Neste código a div do modal deve ter um id="meumodal"
+- O título e a mensagem devem ser incluído na modal
+- O botão SIM deve ter o id="btnsim"
+```
+<div class="modal" tabindex="-1" id="meumodal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Excluir cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Confirma a exclusão do cliente?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnsim">SIM</button>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+- Ainda no arquivo cliente.handlebars no final do arquivo incluir a tag script para importar os arquivos JavaScript
+
+```
+<script src="/js/jquery.min.js"></script>
+<script src="/public/site.js"></script>
+```
+
+- Criar dentro do projeto a pasta public, e dentro desta pasta criar o arquivo site.js
+
+- No arquivo public->site.js incluir o seguinte codigo Javascript
+```
+//Criar uma função JavaScript autoexecutavel
+(function(){
+    //procura na tela se tem um id="clientes"
+    //coloque evento click no elemento com
+    //a class js-delete
+    $('#clientes').on('click','.js-delete',function(){
+        //callback
+        let botaoclicado = $(this) //jquery recupere botaoclicado
+        //copia o id do cliente escondido no botao excluir para o botao sim
+        $('#btnsim').attr('data-id', botaoclicado.attr('data-id'))
+        //abre a tela de confirmação da exclusão
+        $('#meumodal').modal('show')
+    })
+    //procura na tela o botao SIM
+    //coloca um evento de click no botao sim
+    $('#btnsim').on('click',function(){
+        //receber a referencia do botao sim
+        let botaosim = $(this)
+        //recuperar de dentro do botao sim o codigo do cliente
+        let idcliente = botaosim.attr('data-id')
+        // chamar o backend da aplicação para remover o cliente
+        $.ajax({
+            url: '/clientes/delete/' + idcliente, //no endereco de deletar
+            method: 'GET', //metodo do protocolo http GET
+            success: function() {
+                window.location.href='/clientes' //em caso de sucesso volte para o inicio
+            }
+        })
+    })
+})()
+```
+
+- Alterar o código do arquivo index.js para incluir a rota para remover um cliente da variável fakedata
+```
+app.get('/clientes/delete/:id', function(req,res){
+    //código para excluir o cliente no backend
+    //procurar pelo cliente no fakedata
+    let umcliente = fakedata.find(o => o.id == req.params['id'])
+    let posicaocli = fakedata.indexOf(umcliente)
+    if(posicaocli > -1){ //testando se eu achei o cliente
+        fakedata.splice(posicaocli,1)
+    }
+    res.redirect('/clientes')
+})
+```
